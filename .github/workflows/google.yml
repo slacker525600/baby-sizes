@@ -19,12 +19,13 @@ on:
 # most of this is unused at present. setting up gke project but not needing to deploy today
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
-  GKE_CLUSTER: cluster-1    # TODO: update to cluster name
-  GKE_ZONE: us-central1-c   # TODO: update to cluster zone
-  DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
-  REPOSITORY: samples # TODO: update to Artifact Registry docker repository
-  IMAGE: static-site
+  SERVICE_ACCOUNT: ${{ secrets.GKE_SERVICE_ACCOUNT }}
+  GAR_LOCATION: us-central1
+  # GKE_CLUSTER: cluster-1    # TODO: update to cluster name
+  # GKE_ZONE: us-central1-c   # TODO: update to cluster zone
+  # DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
+  REPOSITORY: baby-sizes-api
+  IMAGE: baby-sizes-api
 
 jobs:
   setup-build-publish-deploy:
@@ -46,8 +47,8 @@ jobs:
       uses: 'google-github-actions/auth@v0'
       with:
         token_format: 'access_token'
-        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+        workload_identity_provider: 'projects/954797221343/locations/global/workloadIdentityPools/baby-sizes-gha/providers/gha-provider'
+        service_account: '${{ env.SERVICE_ACCOUNT}}'
 
     # Alternative option - authentication via credentials json
     # - id: 'auth'
